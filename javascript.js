@@ -6,7 +6,7 @@ function computerPlay() {
     return computerSelection;
 }
 
-// let userSelection = prompt("Rock, Paper, or Scissors?", "");
+// Compare userSelection to computerSelection
 
 function compareSelections (userSelection, computerSelection) {
     let outcome;
@@ -23,6 +23,8 @@ function compareSelections (userSelection, computerSelection) {
     return outcome;
     }
 
+// Prompt user to make a selection for 5 rounds
+
 function game() {
     userWinCount = 0;
     computerWinCount = 0;
@@ -31,8 +33,19 @@ function game() {
         let userSelection = prompt("Rock, Paper, or Scissors?", "");
         let computerSelection = computerPlay();
         let roundWinner = compareSelections(userSelection, computerSelection);
-        alert(roundWinner);
+        if (roundWinner === 1) {
+            userWinCount++;
+        } else if (roundWinner === 2) {
+            computerWinCount++;
+        } else {
+            continue;
+        }
         roundsCompleted++
+    }
+    if (userWinCount > computerWinCount) {
+        alert("You are the champion!!!")
+    } else {
+        alert("You lose :'(")
     }
 }
 
