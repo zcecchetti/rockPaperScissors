@@ -10,15 +10,14 @@ function computerPlay() {
 
 function compareSelections (userSelection, computerSelection) {
     let outcome;
-    if (userSelection.toLowerCase() > computerSelection) {
-        alert("You win this round!");
-        outcome = 1;
-    } else if (userSelection.toLowerCase() < computerSelection) {
-        alert("The computer wins this round...");
-        outcome = 2;
+    if (userSelection.toLowerCase() === 'rock') {
+        outcome = (computerSelection === "rock") ? 0 : (computerSelection === "scissors") ? 1 : (computerSelection === "paper") ? 2 : "";
+    } else if (userSelection.toLowerCase() === "paper") {
+        outcome = (computerSelection === "paper") ? 0 : (computerSelection === "rock") ? 1 : (computerSelection === "scissors") ? 2 : "";
+    } else if (userSelection.toLowerCase() === "scissors") {
+        outcome = (computerSelection === "scissors") ? 0 : (computerSelection === "paper") ? 1 : (computerSelection === "rock") ? 2 : "";
     } else {
-        alert("Its a draw.")
-        outcome = 0;
+        outcome = null;
     }
     return outcome;
     }
@@ -34,10 +33,16 @@ function game() {
         let computerSelection = computerPlay();
         let roundWinner = compareSelections(userSelection, computerSelection);
         if (roundWinner === 1) {
+            alert("You win this round!");
             userWinCount++;
         } else if (roundWinner === 2) {
+            alert("The computer wins this round...")
             computerWinCount++;
+        } else if (roundWinner === 0) {
+            alert("It's a draw.");
+            continue;
         } else {
+            alert("That's not an option");
             continue;
         }
         roundsCompleted++
