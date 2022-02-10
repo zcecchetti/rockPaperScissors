@@ -4,7 +4,7 @@ function computerPlay() {
     let randomNumber = Math.floor(Math.random() * 3);
     let computerSelection = (randomNumber === 0) ? "rock" : (randomNumber === 1) ? "paper" : (randomNumber === 2) ? "scissors" : "" ;
     return computerSelection;
-}
+};
 
 // Compare userSelection to computerSelection
 
@@ -20,37 +20,78 @@ function compareSelections (userSelection, computerSelection) {
         outcome = null;
     }
     return outcome;
+};
+
+// create a few variables needed for future iteration
+
+let userSelection = "";
+let userWinCount = 0;
+let computerWinCount = 0;
+let roundsCompleted = 0;
+
+// allow user to select an input with buttons and call function to play 5 rounds
+
+const userClick = document.querySelectorAll('button');
+userClick.forEach((button) => {
+    button.addEventListener("click", () => {
+        userSelection = button.id;
+        playRound(userSelection);
+        addGameInfo(roundOutcome);
+    });
+});
+
+// function to play each round
+
+function playRound(userSelection) {
+    let computerSelection = computerPlay();
+    let roundWinner = compareSelections(userSelection, computerSelection);
+    
+    if (roundsCompleted > 5) {
+        roundOutcome = "stop choosing, the game is over!"
+        roundsCompleted++;
+        return roundOutcome;
     }
-
-// Prompt user to make a selection for 5 rounds
-
-function game() {
-    userWinCount = 0;
-    computerWinCount = 0;
-    roundsCompleted = 0;
-    while (roundsCompleted < 5) {
-        let userSelection = prompt("Rock, Paper, or Scissors?", "");
-        let computerSelection = computerPlay();
-        let roundWinner = compareSelections(userSelection, computerSelection);
+    if (roundsCompleted < 5) {
         if (roundWinner === 1) {
-            alert("You win this round!");
+            roundOutcome = "You win this round";
             userWinCount++;
+            roundsCompleted++;
         } else if (roundWinner === 2) {
-            alert("The computer wins this round...")
+            roundOutcome = "The computer wins this round";
             computerWinCount++;
-        } else if (roundWinner === 0) {
-            alert("It's a draw.");
-            continue;
+            roundsCompleted++;
         } else {
-            alert("That's not an option");
-            continue;
+            roundOutcome = "It's a draw.";
+        };
+    }
+    if (roundsCompleted === 5) {
+        if (computerWinCount > userWinCount) {
+            roundOutcome = roundOutcome + " and the computer is the champion... better luck next time!";
+            roundsCompleted ++;
+        } else {
+            roundOutcome = roundOutcome + " and you are the CHAMPION!!";
+            roundsCompleted++;
         }
-        roundsCompleted++
-    }
-    if (userWinCount > computerWinCount) {
-        alert("You are the champion!!!")
-    } else {
-        alert("You lose :'(")
-    }
-}
+    };
+    return roundOutcome;
+};
 
+// write results of each round to DOM
+
+function addGameInfo(roundOutcome) {
+    const results = document.querySelector('#results');
+    const gameResults = document.createElement('div');
+    gameResults.classList.add('gameResults');
+    gameResults.textContent = roundOutcome;
+
+    if (roundsCompleted < 8) {
+        const eliminatePast = document.querySelectorAll(".gameResults");
+        eliminatePast.forEach(gameResults => {
+            gameResults.remove();
+        });
+        results.appendChild(gameResults);
+    } else {
+        return;
+    };
+};
+    
